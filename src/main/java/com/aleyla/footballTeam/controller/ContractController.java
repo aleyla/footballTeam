@@ -1,7 +1,6 @@
 package com.aleyla.footballTeam.controller;
 
 import com.aleyla.footballTeam.entity.Contract;
-import com.aleyla.footballTeam.exception.EntityNotFoundException;
 import com.aleyla.footballTeam.service.ContractService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,11 +37,7 @@ public class ContractController {
     @GetMapping(path = "{id}")
     public @ResponseBody
     Contract findByid(@PathVariable("id") Long id) {
-        Contract contract = contractService.findByid(id);
-        if(contract == null){
-            throw new EntityNotFoundException();
-        }
-        return contract;
+        return contractService.findByid(id);
     }
 
     @DeleteMapping(path = "{id}")

@@ -1,6 +1,7 @@
 package com.aleyla.footballTeam.service;
 
 import com.aleyla.footballTeam.entity.Team;
+import com.aleyla.footballTeam.exception.EntityNotFoundException;
 import com.aleyla.footballTeam.exception.InvalidRequestException;
 import com.aleyla.footballTeam.repository.TeamRepository;
 import org.springframework.stereotype.Component;
@@ -16,11 +17,19 @@ public class TeamService {
     }
 
     public Team findByid(Long id){
-        return teamRepository.findById(id).orElse(null);
+        Team team = teamRepository.findById(id).orElse(null);
+        if (team == null) {
+            throw new EntityNotFoundException();
+        }
+        return team;
     }
 
     public Team save(Team team){
-        //TODO Controller
+
+        if(team == null){
+
+        }
+
         return teamRepository.save(team);
     }
 

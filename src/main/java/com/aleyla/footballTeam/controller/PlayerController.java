@@ -1,7 +1,6 @@
 package com.aleyla.footballTeam.controller;
 
 import com.aleyla.footballTeam.entity.Player;
-import com.aleyla.footballTeam.exception.EntityNotFoundException;
 import com.aleyla.footballTeam.service.PlayerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,11 +35,7 @@ public class PlayerController {
     @GetMapping(path = "{id}")
     public @ResponseBody
     Player findByid(@PathVariable("id") Long id) {
-        Player player = playerService.findByid(id);
-        if (player == null) {
-            throw new EntityNotFoundException();
-        }
-        return player;
+        return playerService.findByid(id);
     }
 
     @DeleteMapping(path = "{id}")

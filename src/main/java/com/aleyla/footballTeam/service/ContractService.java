@@ -36,7 +36,6 @@ public class ContractService {
 
 
     public Contract findByid(Long id) {
-
         Contract contract = contractRepository.findById(id).orElse(null);
         if(contract == null){
             throw new EntityNotFoundException();
