@@ -16,16 +16,19 @@ public class Player {
     @SequenceGenerator(name = "seq_player", sequenceName = "seq_player", allocationSize = 1)
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "SURNAME")
+    @Column(name = "surname")
     private String surname;
 
-    @Column(name = "BIRTHDAY", columnDefinition = "DATE")
+    @Column(name = "identity_number")
+    private String identityNumber;
+
+    @Column(name = "birthday", columnDefinition = "date")
     private LocalDate birthday;
 
-    @Column(name = "EXPERIENCE_DURATION")
+    @Column(name = "experience_duration")
     private BigDecimal experienceDuration;
 
     public Long getId() {
@@ -66,5 +69,13 @@ public class Player {
 
     public void setExperienceDuration(BigDecimal experienceDuration) {
         this.experienceDuration = experienceDuration;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
     }
 }

@@ -1,6 +1,7 @@
 package com.aleyla.footballTeam.controller;
 
 import com.aleyla.footballTeam.entity.Contract;
+import com.aleyla.footballTeam.exception.EntityNotFoundException;
 import com.aleyla.footballTeam.service.ContractService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "contract/v1")
@@ -27,10 +29,20 @@ public class ContractController {
         return ResponseEntity.created(uri).build();
     }
 
+    @GetMapping(path = "all")
+    public @ResponseBody
+    List<Contract> findAll() {
+        return contractService.findAll();
+    }
+
     @GetMapping(path = "{id}")
     public @ResponseBody
-    Contract getById(@PathVariable("id") Long id) {
-        return contractService.findByid(id);
+    Contract findByid(@PathVariable("id") Long id) {
+        Contract contract = contractService.findByid(id);
+        if(contract == null){
+            throw new EntityNotFoundException();
+        }
+        return contract;
     }
 
     @DeleteMapping(path = "{id}")
@@ -42,12 +54,6 @@ public class ContractController {
     @PutMapping(path = "{id}")
     public @ResponseBody
     void update(@PathVariable("id") Long id, @RequestBody Contract contract) {
-        if (contract.getId() != null && !id.equals(contract.getId())) {
-            //TODO Exception
-        }
-        if (contract.getId() == null) {
-            contract.setId(id);
-        }
-        contractService.save(contract);
+        contractService.update(id, contract);
     }
 }

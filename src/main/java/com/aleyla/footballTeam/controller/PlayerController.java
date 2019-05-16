@@ -1,6 +1,7 @@
 package com.aleyla.footballTeam.controller;
 
 import com.aleyla.footballTeam.entity.Player;
+import com.aleyla.footballTeam.exception.EntityNotFoundException;
 import com.aleyla.footballTeam.service.PlayerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "player/v1")
@@ -25,10 +27,20 @@ public class PlayerController {
         return ResponseEntity.created(uri).build();
     }
 
+    @GetMapping(path = "all")
+    public @ResponseBody
+    List<Player> findAll() {
+        return playerService.findAll();
+    }
+
     @GetMapping(path = "{id}")
     public @ResponseBody
-    Player getById(@PathVariable("id") Long id) {
-        return playerService.findByid(id);
+    Player findByid(@PathVariable("id") Long id) {
+        Player player = playerService.findByid(id);
+        if (player == null) {
+            throw new EntityNotFoundException();
+        }
+        return player;
     }
 
     @DeleteMapping(path = "{id}")
@@ -40,13 +52,7 @@ public class PlayerController {
     @PutMapping(path = "{id}")
     public @ResponseBody
     void update(@PathVariable("id") Long id, @RequestBody Player player) {
-        if (player.getId() != null && !id.equals(player.getId())) {
-            //TODO Exception
-        }
-        if (player.getId() == null) {
-            player.setId(id);
-        }
-        playerService.save(player);
+        playerService.update(id, player);
     }
 
 }
