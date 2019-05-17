@@ -17,7 +17,7 @@ public class ContractService {
     }
 
     public Contract save(Contract contract) {
-        //TODO Controller
+        validate(contract);
         return contractRepository.save(contract);
     }
 
@@ -28,12 +28,24 @@ public class ContractService {
         if (contract.getId() == null) {
             contract.setId(id);
         }
-
-        //TODO Controller
-
+        validate(contract);
         return contractRepository.save(contract);
     }
 
+
+    private void validate(Contract contract) {
+        if (contract == null) {
+            throw new InvalidRequestException("Contract", contract, "CONTRACT_COULD_NOT_BE_EMPTY");
+        }
+        if (contract.getContractCode() == null) {
+            throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_COULD_NOT_BE_EMPTY");
+        }
+        Contract sameCode = contractRepository.findByContractCode(contract.getContractCode());
+        if (sameCode != null) {
+            throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_MUST_BE_UNIQUE");
+        }
+
+    }
 
     public Contract findByid(Long id) {
         Contract contract = contractRepository.findById(id).orElse(null);
@@ -53,6 +65,10 @@ public class ContractService {
 
 
     public void delete(Long id) {
+        Contract contract = contractRepository.findById(id).orElse(null);
+        if(contract == null){
+            throw new EntityNotFoundException();
+        }
         contractRepository.deleteById(id);
     }
 

@@ -29,7 +29,7 @@ public class Player {
     private LocalDate birthday;
 
     @Column(name = "experience_duration")
-    private BigDecimal experienceDuration;
+    private BigDecimal experienceDuration = BigDecimal.ZERO;
 
     public Long getId() {
         return id;

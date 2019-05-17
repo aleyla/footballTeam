@@ -34,6 +34,10 @@ public class TeamService {
     }
 
     public void delete(Long id) {
+        Team team = teamRepository.findById(id).orElse(null);
+        if (team == null) {
+            throw new EntityNotFoundException();
+        }
         teamRepository.deleteById(id);
     }
 

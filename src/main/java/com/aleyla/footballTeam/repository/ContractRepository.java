@@ -13,4 +13,5 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
 
     List<Contract> findAllByPlayerId(Long playerId);
 
+    Contract findByContractCode(String contractCode);
 }
