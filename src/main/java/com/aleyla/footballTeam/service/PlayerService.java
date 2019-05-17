@@ -36,7 +36,7 @@ public class PlayerService {
         playerRepository.deleteById(id);
     }
 
-    public Player update(Long id, Player player) {
+    public void update(Long id, Player player) {
         if (player.getId() != null && !id.equals(player.getId())) {
             throw new InvalidRequestException("id", id, "PLAYER_ID_NOT_MATCH");
         }
@@ -44,7 +44,7 @@ public class PlayerService {
             player.setId(id);
         }
         validatePlayer(player);
-        return playerRepository.save(player);
+         playerRepository.save(player);
     }
 
 

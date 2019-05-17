@@ -21,7 +21,7 @@ public class ContractService {
         return contractRepository.save(contract);
     }
 
-    public Contract update(Long id, Contract contract) {
+    public void update(Long id, Contract contract) {
         if (contract.getId() != null && !id.equals(contract.getId())) {
             throw new InvalidRequestException("id", id, "CONTRACT_ID_NOT_MATCH");
         }
@@ -29,7 +29,7 @@ public class ContractService {
             contract.setId(id);
         }
         validate(contract);
-        return contractRepository.save(contract);
+        contractRepository.save(contract);
     }
 
 
@@ -40,8 +40,12 @@ public class ContractService {
         if (contract.getContractCode() == null) {
             throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_COULD_NOT_BE_EMPTY");
         }
+
+        //Update edebilsin ama aynı isimli kaydedemesin
         Contract sameCode = contractRepository.findByContractCode(contract.getContractCode());
-        if (sameCode != null) {
+        if (sameCode != null && !sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())) {
+            throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_MUST_BE_UNIQUE");
+        }else if(sameCode != null && sameCode.getId() != contract.getId() && sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())){
             throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_MUST_BE_UNIQUE");
         }
 

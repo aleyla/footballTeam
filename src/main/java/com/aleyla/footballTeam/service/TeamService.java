@@ -26,10 +26,6 @@ public class TeamService {
 
     public Team save(Team team) {
         validateTeam(team);
-        Team sameNameTeam = teamRepository.findByName(team.getName());
-        if (sameNameTeam != null) {
-            throw new InvalidRequestException("name", team.getName(), "TEAM_NAME_MUST_BE_UNIQUE");
-        }
         return teamRepository.save(team);
     }
 
@@ -41,7 +37,7 @@ public class TeamService {
         teamRepository.deleteById(id);
     }
 
-    public Team update(Long id, Team team) {
+    public void update(Long id, Team team) {
         if (team.getId() != null && !id.equals(team.getId())) {
             throw new InvalidRequestException("id", id, "TEAM_ID_NOT_MATCH");
         }
@@ -49,7 +45,7 @@ public class TeamService {
             team.setId(id);
         }
         validateTeam(team);
-        return teamRepository.save(team);
+        teamRepository.save(team);
     }
 
     private void validateTeam(Team team) {
@@ -61,6 +57,14 @@ public class TeamService {
         }
         if (team.getCurrencyCode() == null || team.getCurrencyCode().isEmpty()) {
             throw new InvalidRequestException("currencyCode", team, "TEAM_CURRENCY_CODE_COULD_NOT_BE_EMPTY");
+        }
+
+        //Update edebilsin ama aynı isimli kaydedemesin
+        Team sameNameTeam = teamRepository.findByName(team.getName());
+        if (sameNameTeam != null && !sameNameTeam.getName().equalsIgnoreCase(team.getName())) {
+            throw new InvalidRequestException("name", team.getName(), "TEAM_NAME_MUST_BE_UNIQUE");
+        }else if(sameNameTeam != null && sameNameTeam.getId() != team.getId() && sameNameTeam.getName().equalsIgnoreCase(team.getName())){
+            throw new InvalidRequestException("name", team.getName(), "TEAM_NAME_MUST_BE_UNIQUE");
         }
     }
 
