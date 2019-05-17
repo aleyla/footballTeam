@@ -50,4 +50,8 @@ public class PlayerController {
         playerService.update(id, player);
     }
 
+    @GetMapping(path = "findPlayerByTeamAndYear")
+    public @ResponseBody List<Player> findPlayerByTeamAndYear(@RequestParam("teamId") Long teamId, @RequestParam("year") Integer year) {
+        return playerService.findPlayerByTeamAndYear(teamId, year);
+    }
 }

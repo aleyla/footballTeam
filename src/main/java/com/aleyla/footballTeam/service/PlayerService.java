@@ -3,17 +3,21 @@ package com.aleyla.footballTeam.service;
 import com.aleyla.footballTeam.entity.Player;
 import com.aleyla.footballTeam.exception.EntityNotFoundException;
 import com.aleyla.footballTeam.exception.InvalidRequestException;
+import com.aleyla.footballTeam.repository.ContractRepository;
 import com.aleyla.footballTeam.repository.PlayerRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
 public class PlayerService {
     private PlayerRepository playerRepository;
+    private ContractRepository contractRepository;
 
-    public PlayerService(PlayerRepository playerRepository) {
+    public PlayerService(PlayerRepository playerRepository, ContractRepository contractRepository) {
         this.playerRepository = playerRepository;
+        this.contractRepository = contractRepository;
     }
 
     public Player findByid(Long id){
@@ -65,5 +69,12 @@ public class PlayerService {
 
     public List<Player> findAll() {
         return playerRepository.findAll();
+    }
+
+
+    public List<Player> findPlayerByTeamAndYear(Long teamId, Integer year) {
+        LocalDate startDate = LocalDate.of(year, 1, 1);
+        LocalDate endDate = LocalDate.of(year, 12, 31);
+        return playerRepository.findAllById(contractRepository.findAllPlayerIdsByTeamIdAndContractDate(teamId,startDate,endDate));
     }
 }

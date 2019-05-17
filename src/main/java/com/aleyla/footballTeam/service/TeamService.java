@@ -3,6 +3,7 @@ package com.aleyla.footballTeam.service;
 import com.aleyla.footballTeam.entity.Team;
 import com.aleyla.footballTeam.exception.EntityNotFoundException;
 import com.aleyla.footballTeam.exception.InvalidRequestException;
+import com.aleyla.footballTeam.repository.ContractRepository;
 import com.aleyla.footballTeam.repository.TeamRepository;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +12,11 @@ import java.util.List;
 @Component
 public class TeamService {
     private TeamRepository teamRepository;
+    private ContractRepository contractRepository;
 
-    public TeamService(TeamRepository teamRepository) {
+    public TeamService(TeamRepository teamRepository, ContractRepository contractRepository) {
         this.teamRepository = teamRepository;
+        this.contractRepository = contractRepository;
     }
 
     public Team findByid(Long id) {
@@ -70,5 +73,9 @@ public class TeamService {
 
     public List<Team> findAll() {
         return teamRepository.findAll();
+    }
+
+    public List<Team> findTeamByPlayerId(Long playerId) {
+        return teamRepository.findAllById(contractRepository.findAllTeamIdsByPlayerId(playerId));
     }
 }

@@ -50,4 +50,9 @@ public class TeamController {
     void update(@PathVariable("id") Long id, @RequestBody Team team) {
         teamService.update(id, team);
     }
+
+    @GetMapping(path = "findTeamByPlayer")
+    public @ResponseBody List<Team> findTeamByPlayerId(@RequestParam("id") Long id) {
+        return teamService.findTeamByPlayerId(id);
+    }
 }

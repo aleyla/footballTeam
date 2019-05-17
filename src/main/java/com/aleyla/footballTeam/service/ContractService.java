@@ -45,7 +45,7 @@ public class ContractService {
         Contract sameCode = contractRepository.findByContractCode(contract.getContractCode());
         if (sameCode != null && !sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())) {
             throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_MUST_BE_UNIQUE");
-        }else if(sameCode != null && sameCode.getId() != contract.getId() && sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())){
+        } else if (sameCode != null && sameCode.getId() != contract.getId() && sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())) {
             throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_MUST_BE_UNIQUE");
         }
 
@@ -53,24 +53,15 @@ public class ContractService {
 
     public Contract findByid(Long id) {
         Contract contract = contractRepository.findById(id).orElse(null);
-        if(contract == null){
+        if (contract == null) {
             throw new EntityNotFoundException();
         }
         return contract;
     }
 
-    public List<Contract> findByTeamId(Long teamId) {
-        return contractRepository.findAllByTeamId(teamId);
-    }
-
-    public List<Contract> findByPlayerId(Long playerId) {
-        return contractRepository.findAllByPlayerId(playerId);
-    }
-
-
     public void delete(Long id) {
         Contract contract = contractRepository.findById(id).orElse(null);
-        if(contract == null){
+        if (contract == null) {
             throw new EntityNotFoundException();
         }
         contractRepository.deleteById(id);
@@ -79,4 +70,5 @@ public class ContractService {
     public List<Contract> findAll() {
         return contractRepository.findAll();
     }
+
 }
