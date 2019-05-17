@@ -52,7 +52,7 @@ public class TeamController {
     }
 
     @GetMapping(path = "findTeamByPlayer")
-    public @ResponseBody List<Team> findTeamByPlayerId(@RequestParam("id") Long id) {
+    public @ResponseBody List<Team> findTeamByPlayerId(@RequestParam("playerId") Long id) {
         return teamService.findTeamByPlayerId(id);
     }
 }
