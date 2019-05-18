@@ -20,19 +20,20 @@ public class PlayerService {
         this.contractRepository = contractRepository;
     }
 
-    public Player findByid(Long id){
+    public Player findByid(Long id) {
         Player player = playerRepository.findById(id).orElse(null);
         if (player == null) {
             throw new EntityNotFoundException();
         }
         return player;
     }
-    public Player save(Player player){
+
+    public Player save(Player player) {
         validatePlayer(player);
         return playerRepository.save(player);
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         Player player = playerRepository.findById(id).orElse(null);
         if (player == null) {
             throw new EntityNotFoundException();
@@ -48,7 +49,7 @@ public class PlayerService {
             player.setId(id);
         }
         validatePlayer(player);
-         playerRepository.save(player);
+        playerRepository.save(player);
     }
 
 
@@ -60,10 +61,10 @@ public class PlayerService {
             throw new InvalidRequestException("name", player.getName(), "TEAM_NAME_COULD_NOT_BE_EMPTY");
         }
         if (player.getSurname() == null || player.getSurname().isEmpty()) {
-            throw new InvalidRequestException("surname",  player.getSurname(), "PLAYER_SURNAME_COULD_NOT_BE_EMPTY");
+            throw new InvalidRequestException("surname", player.getSurname(), "PLAYER_SURNAME_COULD_NOT_BE_EMPTY");
         }
         if (player.getBirthday() == null) {
-            throw new InvalidRequestException("birthday",  player.getBirthday(), "PLAYER_SURNAME_COULD_NOT_BE_EMPTY");
+            throw new InvalidRequestException("birthday", player.getBirthday(), "PLAYER_SURNAME_COULD_NOT_BE_EMPTY");
         }
     }
 
@@ -75,6 +76,6 @@ public class PlayerService {
     public List<Player> findPlayerByTeamAndYear(Long teamId, Integer year) {
         LocalDate startDate = LocalDate.of(year, 1, 1);
         LocalDate endDate = LocalDate.of(year, 12, 31);
-        return playerRepository.findAllById(contractRepository.findAllPlayerIdsByTeamIdAndContractDate(teamId,startDate,endDate));
+        return playerRepository.findAllById(contractRepository.findAllPlayerIdsByTeamIdAndContractDate(teamId, startDate, endDate));
     }
 }
