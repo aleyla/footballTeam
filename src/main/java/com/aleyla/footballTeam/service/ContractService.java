@@ -32,6 +32,10 @@ public class ContractService {
 
     public Contract save(Contract contract) {
         validate(contract);
+        Contract sameCode = contractRepository.findByContractCode(contract.getContractCode());
+        if (sameCode != null) {
+            throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_MUST_BE_UNIQUE");
+        }
         return contractRepository.save(contract);
     }
 
@@ -54,17 +58,17 @@ public class ContractService {
         if (contract.getContractCode() == null) {
             throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_COULD_NOT_BE_EMPTY");
         }
-        if(teamRepository.findById(contract.getTeamId()).orElse(null) == null){
+        if (teamRepository.findById(contract.getTeamId()).orElse(null) == null) {
             throw new InvalidRequestException("Team", contract.getTeamId(), " EXIST");
         }
-        if(playerRepository.findById(contract.getPlayerId()).orElse(null) == null){
+        if (playerRepository.findById(contract.getPlayerId()).orElse(null) == null) {
             throw new InvalidRequestException("Player", contract.getPlayerId(), " EXIST");
         }
         //Update edebilsin ama aynı isimli kaydedemesin
         Contract sameCode = contractRepository.findByContractCode(contract.getContractCode());
         if (sameCode != null && !sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())) {
             throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_MUST_BE_UNIQUE");
-        } else if (sameCode != null && sameCode.getId() != contract.getId() && sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())) {
+        } else if (sameCode != null && contract.getId() != null && sameCode.getId() != contract.getId() && sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())) {
             throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_MUST_BE_UNIQUE");
         }
 
