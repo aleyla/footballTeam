@@ -1,6 +1,5 @@
 package com.aleyla.footballTeam.dto;
 
-import com.aleyla.footballTeam.entity.Contract;
 import com.aleyla.footballTeam.entity.Player;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -9,7 +8,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerContract {
     private Player player;
-    private List<Contract> contracts;
+    private List<TransferSuggest> suggests;
 
     public Player getPlayer() {
         return player;
@@ -19,11 +18,11 @@ public class PlayerContract {
         this.player = player;
     }
 
-    public List<Contract> getContracts() {
-        return contracts;
+    public List<TransferSuggest> getSuggests() {
+        return suggests;
     }
 
-    public void setContracts(List<Contract> contracts) {
-        this.contracts = contracts;
+    public void setSuggests(List<TransferSuggest> suggests) {
+        this.suggests = suggests;
     }
 }

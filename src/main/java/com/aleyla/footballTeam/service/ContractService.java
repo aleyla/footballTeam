@@ -1,6 +1,7 @@
 package com.aleyla.footballTeam.service;
 
 import com.aleyla.footballTeam.dto.PlayerContract;
+import com.aleyla.footballTeam.dto.TransferSuggest;
 import com.aleyla.footballTeam.entity.Contract;
 import com.aleyla.footballTeam.entity.Player;
 import com.aleyla.footballTeam.entity.Team;
@@ -89,30 +90,30 @@ public class ContractService {
         if (player == null) {
             throw new InvalidRequestException("Player", playerId, " NOT_FOUND");
         }
-        List<Contract> contract = contractRepository.findByPlayerId(playerId);
+        List<Contract> contract = contractRepository.findByPlayerId(playerId, LocalDate.now());
         if (contract == null || contract.isEmpty()) {
             throw new InvalidRequestException("Player", playerId, " DO_NOT_HAVE_ANY_CONTRACT");
         }
 
         PlayerContract playerContract = new PlayerContract();
         playerContract.setPlayer(player);
-        playerContract.setContracts(new ArrayList<>());
+        playerContract.setSuggests(new ArrayList<>());
 
         contract.stream().forEach(cont -> {
-            Contract transferContract = new Contract();
+            TransferSuggest transferSuggest = new TransferSuggest();
             BigDecimal contractPrice = calculateContractPrice(player.getExperienceDuration(), calculateAge(player.getBirthday()));
             BigDecimal teamCommission = contractPrice.divide(new BigDecimal(10), 2, BigDecimal.ROUND_HALF_UP);
-            transferContract.setPlayerId(player.getId());
-            transferContract.setContractPrice(contractPrice);
-            transferContract.setTeamCommission(teamCommission);
-            transferContract.setTransferFee(contractPrice.add(teamCommission));
+            transferSuggest.setContractPrice(contractPrice);
+            transferSuggest.setTeamCommission(teamCommission);
+            transferSuggest.setTransferFee(contractPrice.add(teamCommission));
 
             Team team = teamRepository.findById(cont.getTeamId()).orElse(null);
             if (team == null) {
                 throw new InvalidRequestException("Team", cont.getId(), " NOT_FOUND");
             }
-            transferContract.setCurrencyCode(team.getCurrencyCode());
-            playerContract.getContracts().add(transferContract);
+            transferSuggest.setCurrencyCode(team.getCurrencyCode());
+            transferSuggest.setCurrentTeamName(team.getName());
+            playerContract.getSuggests().add(transferSuggest);
 
         });
 
