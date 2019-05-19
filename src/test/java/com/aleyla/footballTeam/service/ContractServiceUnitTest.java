@@ -39,4 +39,5 @@ public class ContractServiceUnitTest {
         testContract.setContractCode(null);
         service.save(testContract);
     }
+
 }

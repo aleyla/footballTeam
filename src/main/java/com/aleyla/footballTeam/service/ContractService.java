@@ -134,7 +134,13 @@ public class ContractService {
     }
 
     private BigDecimal calculateAge(LocalDate birthday) {
-        return new BigDecimal(Period.between(birthday, LocalDate.now()).getYears());
+        BigDecimal age = new BigDecimal(Period.between(birthday, LocalDate.now()).getYears());
+
+        if(BigDecimal.ZERO.compareTo(age) >=0){
+            throw new InvalidRequestException("Player age", 0, "BIGGER_THEN_ZERO");
+        }
+
+        return age;
     }
 
 

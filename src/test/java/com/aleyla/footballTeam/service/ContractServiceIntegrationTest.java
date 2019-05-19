@@ -111,10 +111,11 @@ public class ContractServiceIntegrationTest {
     public void can_calculate_transfer_amout_true() {
         testTeam.setName("calculate");
         Team team = teamService.save(testTeam);
+
         testPlayer.setBirthday(LocalDate.now().minusYears(10));
         testPlayer.setExperienceDuration(BigDecimal.TEN);
-
         Player player = playerService.save(testPlayer);
+
         testContract.setPlayerId(player.getId());
         testContract.setTeamId(team.getId());
         testContract.setStart(LocalDate.now().minusYears(1));
