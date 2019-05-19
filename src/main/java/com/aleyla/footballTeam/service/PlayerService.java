@@ -43,7 +43,7 @@ public class PlayerService {
 
     public void update(Long id, Player player) {
         if (player.getId() != null && !id.equals(player.getId())) {
-            throw new InvalidRequestException("id", id, "PLAYER_ID_NOT_MATCH");
+            throw new InvalidRequestException("id", id, "PLAYER_ID_MATCH");
         }
         if (player.getId() == null) {
             player.setId(id);

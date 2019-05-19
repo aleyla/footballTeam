@@ -54,7 +54,12 @@ public class ContractService {
         if (contract.getContractCode() == null) {
             throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_COULD_NOT_BE_EMPTY");
         }
-
+        if(teamRepository.findById(contract.getTeamId()).orElse(null) == null){
+            throw new InvalidRequestException("Team", contract.getTeamId(), " EXIST");
+        }
+        if(playerRepository.findById(contract.getPlayerId()).orElse(null) == null){
+            throw new InvalidRequestException("Player", contract.getPlayerId(), " EXIST");
+        }
         //Update edebilsin ama aynı isimli kaydedemesin
         Contract sameCode = contractRepository.findByContractCode(contract.getContractCode());
         if (sameCode != null && !sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())) {
@@ -88,11 +93,11 @@ public class ContractService {
     public PlayerContract calculateTransferAmout(Long playerId) {
         Player player = playerRepository.findById(playerId).orElse(null);
         if (player == null) {
-            throw new InvalidRequestException("Player", playerId, " NOT_FOUND");
+            throw new InvalidRequestException("Player", playerId, " EXIST");
         }
         List<Contract> contract = contractRepository.findByPlayerId(playerId, LocalDate.now());
         if (contract == null || contract.isEmpty()) {
-            throw new InvalidRequestException("Player", playerId, " DO_NOT_HAVE_ANY_CONTRACT");
+            throw new InvalidRequestException("Player", playerId, " HAVE_CONTRACT");
         }
 
         PlayerContract playerContract = new PlayerContract();
@@ -109,7 +114,7 @@ public class ContractService {
 
             Team team = teamRepository.findById(cont.getTeamId()).orElse(null);
             if (team == null) {
-                throw new InvalidRequestException("Team", cont.getId(), " NOT_FOUND");
+                throw new InvalidRequestException("Team", cont.getId(), " EXIST");
             }
             transferSuggest.setCurrencyCode(team.getCurrencyCode());
             transferSuggest.setCurrentTeamName(team.getName());

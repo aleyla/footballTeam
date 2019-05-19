@@ -42,7 +42,7 @@ public class TeamService {
 
     public void update(Long id, Team team) {
         if (team.getId() != null && !id.equals(team.getId())) {
-            throw new InvalidRequestException("id", id, "TEAM_ID_NOT_MATCH");
+            throw new InvalidRequestException("id", id, "TEAM_ID_MATCH");
         }
         if (team.getId() == null) {
             team.setId(id);
