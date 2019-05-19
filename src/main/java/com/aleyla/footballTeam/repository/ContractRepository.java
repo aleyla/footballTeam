@@ -8,11 +8,14 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface ContractRepository extends JpaRepository<Contract, Long> {
 
     Contract findByContractCode(String contractCode);
+    List<Contract> findByPlayerId(Long playerId);
+
 
     @Transactional
     @Query(value = "select distinct cont.teamId from Contract cont where cont.playerId=:playerId")

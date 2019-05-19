@@ -1,5 +1,6 @@
 package com.aleyla.footballTeam.controller;
 
+import com.aleyla.footballTeam.dto.PlayerContract;
 import com.aleyla.footballTeam.entity.Contract;
 import com.aleyla.footballTeam.service.ContractService;
 import org.springframework.http.ResponseEntity;
@@ -50,5 +51,12 @@ public class ContractController {
     public @ResponseBody
     void update(@PathVariable("id") Long id, @RequestBody Contract contract) {
         contractService.update(id, contract);
+    }
+
+
+    @GetMapping(path = "transferAmount")
+    public @ResponseBody
+    PlayerContract calculateTransferAmout(@RequestParam("playerId") Long playerId) {
+        return contractService.calculateTransferAmout(playerId);
     }
 }
