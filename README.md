@@ -34,3 +34,5 @@ mvn test
 # Opening Swagger
 
 After running the project, swagger link is: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+
+Date format is YYYY-MM-DD.(e.g 2007-12-03)
