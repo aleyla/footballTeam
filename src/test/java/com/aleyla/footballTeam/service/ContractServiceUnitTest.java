@@ -2,18 +2,15 @@ package com.aleyla.footballTeam.service;
 
 import com.aleyla.footballTeam.entity.Contract;
 import com.aleyla.footballTeam.exception.InvalidRequestException;
-import com.aleyla.footballTeam.service.ContractService;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static org.junit.Assert.*;
-
 public class ContractServiceUnitTest {
 
-    public Contract testContract = new Contract();
+    private Contract testContract = new Contract();
     @Before
     public void setUp() {
         testContract.setId(1L);

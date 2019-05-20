@@ -20,7 +20,7 @@ public class PlayerService {
         this.contractRepository = contractRepository;
     }
 
-    public Player findByid(Long id) {
+    public Player findById(Long id) {
         Player player = playerRepository.findById(id).orElse(null);
         if (player == null) {
             throw new EntityNotFoundException();
@@ -55,7 +55,7 @@ public class PlayerService {
 
     private void validatePlayer(Player player) {
         if (player == null) {
-            throw new InvalidRequestException("player", player, "PLAYER_COULD_NOT_BE_EMPTY");
+            throw new InvalidRequestException("player", null, "PLAYER_COULD_NOT_BE_EMPTY");
         }
         if (player.getName() == null || player.getName().isEmpty()) {
             throw new InvalidRequestException("name", player.getName(), "TEAM_NAME_COULD_NOT_BE_EMPTY");
@@ -64,7 +64,7 @@ public class PlayerService {
             throw new InvalidRequestException("surname", player.getSurname(), "PLAYER_SURNAME_COULD_NOT_BE_EMPTY");
         }
         if (player.getBirthday() == null) {
-            throw new InvalidRequestException("birthday", player.getBirthday(), "PLAYER_SURNAME_COULD_NOT_BE_EMPTY");
+            throw new InvalidRequestException("birthday", player.getBirthday(), "PLAYER_BIRTHDAY_COULD_NOT_BE_EMPTY");
         }
     }
 

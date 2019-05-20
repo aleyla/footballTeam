@@ -31,9 +31,9 @@ public class ContractServiceIntegrationTest {
     @Autowired
     public PlayerService playerService;
 
-    public Player testPlayer = new Player();
-    public Team testTeam = new Team();
-    public Contract testContract = new Contract();
+    private Player testPlayer = new Player();
+    private Team testTeam = new Team();
+    private Contract testContract = new Contract();
 
     @Before
     public void setUp() {
@@ -73,19 +73,19 @@ public class ContractServiceIntegrationTest {
     }
 
     @Test
-    public void can_update_when_parametter_id_null() {
+    public void can_update_when_parameter_id_null() {
         teamService.save(testTeam);
         playerService.save(testPlayer);
 
         testContract.setId(null);
         service.update(1L, testContract);
-        Contract contract = service.findByid(1L);
+        Contract contract = service.findById(1L);
         assertThat(contract.getContractCode(), equalTo(testContract.getContractCode()));
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void can_not_find() {
-        service.findByid(0L);
+        service.findById(0L);
     }
 
 
@@ -108,7 +108,7 @@ public class ContractServiceIntegrationTest {
 
 
     @Test
-    public void can_calculate_transfer_amout_true() {
+    public void can_calculate_transfer_amount_true() {
         testTeam.setName("calculate");
         Team team = teamService.save(testTeam);
 
@@ -124,11 +124,11 @@ public class ContractServiceIntegrationTest {
         testContract.setContractCode("calculateContract");
         Contract contract = service.save(testContract);
 
-        PlayerContract playerContract = service.calculateTransferAmout(player.getId());
-        TransferSuggest first = playerContract.getSuggests().stream().filter(cont -> cont.getCurrentTeamName().equalsIgnoreCase(team.getName())).findFirst().orElse(null);
-        if(first != null){
+        PlayerContract playerContract = service.calculateTransferAmount(player.getId());
+        TransferSuggest first = playerContract.getSuggests().stream().filter(cont -> cont.getCurrentTeamName().equalsIgnoreCase(team.getName())).findAny().orElse(null);
+        if (first != null) {
             //experienceDuration *100000 /age
-            assertThat(first.getContractPrice(),  Matchers.comparesEqualTo(new BigDecimal("100000")));
+            assertThat(first.getContractPrice(), Matchers.comparesEqualTo(new BigDecimal("100000")));
             assertThat(first.getCurrencyCode(), equalTo(contract.getCurrencyCode()));
         }
         assertThat(playerContract.getPlayer().getId(), equalTo(player.getId()));

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 public class PlayerServiceUnitTest {
 
-    public Player testPlayer = new Player();
+    private Player testPlayer = new Player();
 
     @Before
     public void setUp() {

@@ -19,7 +19,7 @@ public class TeamService {
         this.contractRepository = contractRepository;
     }
 
-    public Team findByid(Long id) {
+    public Team findById(Long id) {
         Team team = teamRepository.findById(id).orElse(null);
         if (team == null) {
             throw new EntityNotFoundException();
@@ -57,7 +57,7 @@ public class TeamService {
 
     private void validateTeam(Team team) {
         if (team == null) {
-            throw new InvalidRequestException("team", team, "TEAM_COULD_NOT_BE_EMPTY");
+            throw new InvalidRequestException("team", null, "TEAM_COULD_NOT_BE_EMPTY");
         }
         if (team.getName() == null || team.getName().isEmpty()) {
             throw new InvalidRequestException("name", team.getName(), "TEAM_NAME_COULD_NOT_BE_EMPTY");
@@ -69,7 +69,7 @@ public class TeamService {
         Team sameNameTeam = teamRepository.findByName(team.getName());
         if (sameNameTeam != null && !sameNameTeam.getName().equalsIgnoreCase(team.getName())) {
             throw new InvalidRequestException("name", team.getName(), "TEAM_NAME_MUST_BE_UNIQUE");
-        }else if(sameNameTeam != null && team.getId() != null && sameNameTeam.getId() != team.getId() && sameNameTeam.getName().equalsIgnoreCase(team.getName())){
+        } else if (sameNameTeam != null && team.getId() != null && sameNameTeam.getId().compareTo(team.getId()) != 0 && sameNameTeam.getName().equalsIgnoreCase(team.getName())) {
             throw new InvalidRequestException("name", team.getName(), "TEAM_NAME_MUST_BE_UNIQUE");
         }
     }

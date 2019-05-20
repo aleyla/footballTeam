@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class TeamServiceUnitTest {
 
-    public Team testTeam = new Team();
+    private Team testTeam = new Team();
 
 
     @Before

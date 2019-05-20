@@ -29,7 +29,7 @@ public class ContractController {
         return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping(path = "all")
+    @GetMapping
     public @ResponseBody
     List<Contract> findAll() {
         return contractService.findAll();
@@ -37,8 +37,8 @@ public class ContractController {
 
     @GetMapping(path = "{id}")
     public @ResponseBody
-    Contract findByid(@PathVariable("id") Long id) {
-        return contractService.findByid(id);
+    Contract findById(@PathVariable("id") Long id) {
+        return contractService.findById(id);
     }
 
     @DeleteMapping(path = "{id}")
@@ -54,9 +54,9 @@ public class ContractController {
     }
 
 
-    @GetMapping(path = "transferAmount")
+    @GetMapping(path = "transfer-amount")
     public @ResponseBody
-    PlayerContract calculateTransferAmout(@RequestParam("playerId") Long playerId) {
-        return contractService.calculateTransferAmout(playerId);
+    PlayerContract calculateTransferAmount(@RequestParam("playerId") Long playerId) {
+        return contractService.calculateTransferAmount(playerId);
     }
 }

@@ -1,9 +1,7 @@
 package com.aleyla.footballTeam.service;
 
 import com.aleyla.footballTeam.entity.Player;
-import com.aleyla.footballTeam.entity.Team;
 import com.aleyla.footballTeam.exception.EntityNotFoundException;
-import com.aleyla.footballTeam.exception.InvalidRequestException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +22,7 @@ public class PlayerServiceIntegrationTest {
     @Autowired
     public PlayerService service;
 
-    public Player testPlayer = new Player();
+    private Player testPlayer = new Player();
 
     @Before
     public void setUp() {
@@ -46,16 +44,16 @@ public class PlayerServiceIntegrationTest {
     }
 
     @Test
-    public void can_update_when_parametter_id_null(){
+    public void can_update_when_parameter_id_null(){
         testPlayer.setId(null);
         service.update(1L, testPlayer);
-        Player player = service.findByid(1L);
+        Player player = service.findById(1L);
         assertThat(player.getName(), equalTo(testPlayer.getName()));
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void can_not_find(){
-        service.findByid(0L);
+        service.findById(0L);
     }
 
 

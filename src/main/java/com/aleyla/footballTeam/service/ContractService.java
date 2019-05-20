@@ -53,7 +53,7 @@ public class ContractService {
 
     private void validate(Contract contract) {
         if (contract == null) {
-            throw new InvalidRequestException("Contract", contract, "CONTRACT_COULD_NOT_BE_EMPTY");
+            throw new InvalidRequestException("Contract", null, "CONTRACT_COULD_NOT_BE_EMPTY");
         }
         if (contract.getContractCode() == null) {
             throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_COULD_NOT_BE_EMPTY");
@@ -68,13 +68,13 @@ public class ContractService {
         Contract sameCode = contractRepository.findByContractCode(contract.getContractCode());
         if (sameCode != null && !sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())) {
             throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_MUST_BE_UNIQUE");
-        } else if (sameCode != null && contract.getId() != null && sameCode.getId() != contract.getId() && sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())) {
+        } else if (sameCode != null && contract.getId() != null && sameCode.getId().compareTo(contract.getId()) != 0 && sameCode.getContractCode().equalsIgnoreCase(contract.getContractCode())) {
             throw new InvalidRequestException("ContractCode", contract.getContractCode(), "CONTRACT_CODE_MUST_BE_UNIQUE");
         }
 
     }
 
-    public Contract findByid(Long id) {
+    public Contract findById(Long id) {
         Contract contract = contractRepository.findById(id).orElse(null);
         if (contract == null) {
             throw new EntityNotFoundException();
@@ -94,7 +94,7 @@ public class ContractService {
         return contractRepository.findAll();
     }
 
-    public PlayerContract calculateTransferAmout(Long playerId) {
+    public PlayerContract calculateTransferAmount(Long playerId) {
         Player player = playerRepository.findById(playerId).orElse(null);
         if (player == null) {
             throw new InvalidRequestException("Player", playerId, " EXIST");
@@ -108,7 +108,7 @@ public class ContractService {
         playerContract.setPlayer(player);
         playerContract.setSuggests(new ArrayList<>());
 
-        contract.stream().forEach(cont -> {
+        contract.forEach(cont -> {
             TransferSuggest transferSuggest = new TransferSuggest();
             BigDecimal contractPrice = calculateContractPrice(player.getExperienceDuration(), calculateAge(player.getBirthday()));
             BigDecimal teamCommission = contractPrice.divide(new BigDecimal(10), 2, BigDecimal.ROUND_HALF_UP);
@@ -136,7 +136,7 @@ public class ContractService {
     private BigDecimal calculateAge(LocalDate birthday) {
         BigDecimal age = new BigDecimal(Period.between(birthday, LocalDate.now()).getYears());
 
-        if(BigDecimal.ZERO.compareTo(age) >=0){
+        if (BigDecimal.ZERO.compareTo(age) >= 0) {
             throw new InvalidRequestException("Player age", 0, "BIGGER_THEN_ZERO");
         }
 

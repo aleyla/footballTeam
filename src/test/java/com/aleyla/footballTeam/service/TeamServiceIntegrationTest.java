@@ -17,7 +17,7 @@ import static org.junit.Assert.assertThat;
 @SpringBootTest
 public class TeamServiceIntegrationTest {
 
-    public Team testTeam = new Team();
+    private Team testTeam = new Team();
 
     @Autowired
     public TeamService service;
@@ -38,16 +38,16 @@ public class TeamServiceIntegrationTest {
     }
 
     @Test
-    public void can_update_when_parametter_id_null(){
+    public void can_update_when_parameter_id_null(){
         testTeam.setId(null);
         service.update(1L, testTeam);
-        Team team = service.findByid(1L);
+        Team team = service.findById(1L);
         assertThat(team.getName(), equalTo(testTeam.getName()));
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void can_not_find(){
-        service.findByid(0L);
+        service.findById(0L);
     }
 
 

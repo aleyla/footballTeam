@@ -27,7 +27,7 @@ public class TeamController {
         return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping(path = "all")
+    @GetMapping
     public @ResponseBody
     List<Team> findAll() {
         return teamService.findAll();
@@ -36,7 +36,7 @@ public class TeamController {
     @GetMapping(path = "{id}")
     public @ResponseBody
     Team findById(@PathVariable("id") Long id) {
-        return teamService.findByid(id);
+        return teamService.findById(id);
     }
 
     @DeleteMapping(path = "{id}")
@@ -51,8 +51,9 @@ public class TeamController {
         teamService.update(id, team);
     }
 
-    @GetMapping(path = "findTeamByPlayer")
-    public @ResponseBody List<Team> findTeamByPlayerId(@RequestParam("playerId") Long id) {
+    @GetMapping(path = "team-by-player")
+    public @ResponseBody
+    List<Team> findTeamByPlayerId(@RequestParam("playerId") Long id) {
         return teamService.findTeamByPlayerId(id);
     }
 }
