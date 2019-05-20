@@ -22,7 +22,7 @@ cd docker/local
 After that, from maven the project must be started as (Active profiles=local)
 
 ```shell
-spring-boot:run -Dspring-boot.run.profiles=local
+mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
 For running the tests
