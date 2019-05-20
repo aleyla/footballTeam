@@ -19,7 +19,7 @@ cd docker/local
  docker-compose up -d
  ```
  
-After that, from maven the project must be started as (Active profiles=locale)
+After that, from maven the project must be started as (Active profiles=local)
 
 ```shell
 spring-boot:run -Dspring-boot.run.profiles=local
