@@ -23,27 +23,13 @@ spring:
   application.name: football-team-service
   pid.file: ${java.io.tmpdir}/football-team-service-api.pid
   datasource:
-    driverClassName: org.postgresql.Driver
-    hikari:
-      pool-name: football-team-service-dbconnectionpool
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:test_db
+  flyway:
+    enabled: false
   jpa:
     show-sql: false
-    database: postgresql
+    database: h2
     hibernate:
-      ddl-auto: validate
-
----
-
-spring:
-  profiles: local
-  datasource:
-    url: jdbc:postgresql://localhost:5430/football_team
-    username: postgres
-    password: football_team
-
-springfox:
-  documentation:
-    swagger:
-      v2:
-        host: localhost:8080
+      ddl-auto: create
 
